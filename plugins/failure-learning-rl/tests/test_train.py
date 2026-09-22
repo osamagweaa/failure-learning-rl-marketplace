@@ -23,16 +23,21 @@ def test_default_map_is_solvable():
 
 
 def test_agent_fails_then_succeeds():
-    result = train(GridWorld(), FailureLearningAgent(seed=0), verbose=False)
-    assert result.failures >= 1
-    assert result.solved
-    assert result.path[0] == (0, 0) and result.path[-1] == (5, 5)
-
-
-def test_route_avoids_traps():
     env = GridWorld()
     result = train(env, FailureLearningAgent(seed=0), verbose=False)
-    assert not set(result.path) & env.traps
+    assert result.failures >= 1
+    assert result.solved
+    assert result.path[0] == env.start and result.path[-1] == env.goal
+
+
+def test_route_is_a_valid_walk():
+    env = GridWorld()
+    result = train(env, FailureLearningAgent(seed=0), verbose=False)
+    assert result.solved
+    for (r0, c0), (r1, c1) in zip(result.path, result.path[1:]):
+        assert abs(r0 - r1) + abs(c0 - c1) == 1, "route must move one cell at a time"
+        assert 0 <= r1 < env.rows and 0 <= c1 < env.cols
+        assert (r1, c1) not in env.walls and (r1, c1) not in env.traps
 
 
 def test_same_seed_is_reproducible():

@@ -32,6 +32,10 @@ def test_timeout_after_max_steps():
     assert env.step(LEFT) == ((0, 0), STEP_REWARD, True, "timeout")
 
 
+def test_goal_on_final_step_beats_timeout():
+    assert GridWorld(["SG"], max_steps=1).step(RIGHT) == ((0, 1), GOAL_REWARD, True, "goal")
+
+
 def test_reset_restores_start():
     env = GridWorld(["S.G"])
     env.step(RIGHT)

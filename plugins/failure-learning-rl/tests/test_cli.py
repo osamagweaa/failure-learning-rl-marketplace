@@ -57,6 +57,27 @@ def test_cli_max_steps_is_configurable(tmp_path):
     assert main(["--map", str(map_file), "--max-steps", "10", "--max-episodes", "200", "--quiet"]) == 0
 
 
+def test_cli_verbose_prints_failure_lessons(tmp_path, capsys):
+    map_file = tmp_path / "map.txt"
+    map_file.write_text(EXAMPLE_MAP)
+    assert main(["--map", str(map_file)]) == 0
+    out = capsys.readouterr().out
+    assert "episode 1: FAILED (" in out
+    assert "penalized last" in out and "epsilon ->" in out
+
+
+def test_cli_seed_is_honored(tmp_path, capsys):
+    map_file = tmp_path / "map.txt"
+    map_file.write_text(EXAMPLE_MAP)
+
+    def summary(seed):
+        assert main(["--map", str(map_file), "--seed", seed, "--quiet"]) == 0
+        return capsys.readouterr().out.strip().splitlines()[-2:]  # SOLVED line + route
+
+    assert summary("7") == summary("7")
+    assert summary("0") != summary("1")
+
+
 def test_cli_rejects_non_positive_limits():
     assert main(["--max-episodes", "0"]) == 2
     assert main(["--max-steps", "0"]) == 2
