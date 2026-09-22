@@ -57,15 +57,27 @@ def main(argv=None):
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--map", help="text file, one grid row per line (S start, G goal, # wall, T trap, . floor)")
     parser.add_argument("--max-episodes", type=int, default=5000)
+    parser.add_argument("--max-steps", type=int, default=60, help="steps allowed per episode before it times out")
     parser.add_argument("--quiet", action="store_true", help="hide per-failure lessons")
     args = parser.parse_args(argv)
+
+    if args.max_episodes < 1 or args.max_steps < 1:
+        print("error: --max-episodes and --max-steps must be at least 1", file=sys.stderr)
+        return 2
 
     try:
         layout = None
         if args.map:
             with open(args.map, encoding="utf-8") as f:
-                layout = [line.strip() for line in f if line.strip()]
-        env = GridWorld(layout)
+                # Trim only leading/trailing blank lines (editor artifacts); an interior blank
+                # line is a real mistake and should surface as GridWorld's ragged-row error.
+                lines = [line.rstrip("\r\n") for line in f]
+                while lines and not lines[0].strip():
+                    lines.pop(0)
+                while lines and not lines[-1].strip():
+                    lines.pop()
+                layout = lines
+        env = GridWorld(layout, max_steps=args.max_steps)
     except (OSError, ValueError) as err:
         print(f"error: {err}", file=sys.stderr)
         return 2

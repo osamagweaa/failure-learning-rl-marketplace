@@ -14,13 +14,18 @@ led to the failure, remembers them, explores differently, and loops until it rel
 To train on the built-in map:
 
 ```
-python "${CLAUDE_PLUGIN_ROOT}/scripts/train.py"
+python3 "${CLAUDE_PLUGIN_ROOT}/scripts/train.py"
 ```
 
-Options: `--seed N`, `--map FILE`, `--max-episodes N`, `--quiet`. Exit code 0 means solved, 1 means the
-episode cap was reached, 2 means an invalid map. The `/rl-demo` command wraps this.
+Use `python` instead of `python3` on systems where only that name exists (e.g. Windows). No
+dependencies beyond the standard library; Python 3.8+ required.
 
-To run the tests: `python -m pytest "${CLAUDE_PLUGIN_ROOT}/tests" -q`.
+Options: `--seed N`, `--map FILE`, `--max-episodes N`, `--max-steps N` (per-episode step budget,
+default 60 — raise it for larger custom maps), `--quiet`. Exit code 0 means solved, 1 means the
+episode cap was reached, 2 means invalid arguments or an invalid map. The `/rl-demo` command wraps
+this.
+
+To run the tests: `python3 -m pytest "${CLAUDE_PLUGIN_ROOT}/tests" -q`.
 
 ## How the loop works
 

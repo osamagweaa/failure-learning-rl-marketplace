@@ -1,6 +1,6 @@
 {
   "name": "failure-learning-rl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reinforcement-learning agent that learns from each failed attempt, changes its approach, and retries until it succeeds. Ships a runnable Q-learning gridworld demo, a /rl-demo command, and a skill for adapting it.",
   "author": {
     "name": "Osama"
