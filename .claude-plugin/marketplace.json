@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "osama-rl-plugins",
+  "description": "Reinforcement-learning plugins for Claude Code.",
+  "owner": {
+    "name": "Osama"
+  },
+  "plugins": [
+    {
+      "name": "failure-learning-rl",
+      "source": "./plugins/failure-learning-rl",
+      "description": "RL agent that learns from each failed attempt, changes its approach, and retries until it succeeds. Includes a /rl-demo command and an adaptation skill.",
+      "category": "development",
+      "keywords": ["reinforcement-learning", "q-learning", "retry-loop", "learning-from-failure"]
+    }
+  ]
+}
