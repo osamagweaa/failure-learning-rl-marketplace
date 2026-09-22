@@ -1,3 +1,26 @@
+# Python
 __pycache__/
 *.pyc
 .pytest_cache/
+.venv/
+venv/
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*.json
+*service-account*.json
+.aws/
+.ssh/
+secrets.*
+
+# Personal / local data
+*.local.md
+.claude/settings.local.json
+.DS_Store
+Thumbs.db
